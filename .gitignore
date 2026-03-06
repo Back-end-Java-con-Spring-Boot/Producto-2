@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### OS Files ###
+# Archivos de caché de macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Archivos de caché de Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+.env
