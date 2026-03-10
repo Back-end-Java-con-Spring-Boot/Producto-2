@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="container text-center">
+<nav th:replace="~{layout :: header}"></nav>
+
+<div class="py-5 mt-5 bg-light rounded shadow">
+  <h1>Bienvenido a Alquila Tus Vehículos</h1>
+  <p class="lead">Gestiona tu flota y sucursales desde un solo lugar.</p>
+  <hr class="my-4">
+  <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+    <a th:href="@{/sucursales/lista}" class="btn btn-primary btn-lg px-4">Ver Sucursales</a>
+    <a th:href="@{/vehiculos/lista}" class="btn btn-outline-secondary btn-lg px-4">Ver Vehículos</a>
+  </div>
+</div>
+</body>
+</html>
