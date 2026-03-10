@@ -1,13 +1,19 @@
 package com.alquilatusvehiculos.alquila_tus_vehiculos.controller;
 
-import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Cliente;
-import com.alquilatusvehiculos.alquila_tus_vehiculos.service.ClienteService;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Cliente;
+import com.alquilatusvehiculos.alquila_tus_vehiculos.service.ClienteService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/clientes")
@@ -20,9 +26,9 @@ public class ClienteController {
     }
 
     // ── READ - Listar todos ────────────────────────────────────────
-    @GetMapping
+    @GetMapping({"/lista", ""})
     public String listar(Model model) {
-        model.addAttribute("clientes", clienteService.findAll());
+        model.addAttribute("listaClientes", clienteService.findAll());
         return "clientes/lista";
     }
 
@@ -37,9 +43,9 @@ public class ClienteController {
     // ── CREATE - Guardar nuevo cliente ────────────────────────────
     @PostMapping("/nuevo")
     public String guardarNuevo(@Valid @ModelAttribute("cliente") Cliente cliente,
-                               BindingResult result,
-                               Model model,
-                               RedirectAttributes redirectAttrs) {
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttrs) {
 
         // Validar email duplicado (id null = nuevo cliente)
         if (clienteService.emailYaExiste(cliente.getEmail(), null)) {
@@ -59,8 +65,8 @@ public class ClienteController {
     // ── UPDATE - Mostrar formulario edición ───────────────────────
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable Long id,
-                                          Model model,
-                                          RedirectAttributes redirectAttrs) {
+            Model model,
+            RedirectAttributes redirectAttrs) {
         return clienteService.findById(id).map(cliente -> {
             model.addAttribute("cliente", cliente);
             model.addAttribute("titulo", "Editar Cliente");
@@ -74,10 +80,10 @@ public class ClienteController {
     // ── UPDATE - Guardar cambios ───────────────────────────────────
     @PostMapping("/editar/{id}")
     public String guardarEdicion(@PathVariable Long id,
-                                 @Valid @ModelAttribute("cliente") Cliente cliente,
-                                 BindingResult result,
-                                 Model model,
-                                 RedirectAttributes redirectAttrs) {
+            @Valid @ModelAttribute("cliente") Cliente cliente,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttrs) {
 
         // Validar email duplicado excluyendo el propio cliente
         if (clienteService.emailYaExiste(cliente.getEmail(), id)) {
@@ -106,8 +112,8 @@ public class ClienteController {
     // ── READ - Ver detalle de un cliente ──────────────────────────
     @GetMapping("/{id}")
     public String verDetalle(@PathVariable Long id,
-                             Model model,
-                             RedirectAttributes redirectAttrs) {
+            Model model,
+            RedirectAttributes redirectAttrs) {
         return clienteService.findById(id).map(cliente -> {
             model.addAttribute("cliente", cliente);
             return "clientes/detalle";
