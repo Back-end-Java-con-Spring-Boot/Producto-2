@@ -18,6 +18,9 @@ public class Vehiculo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 50, nullable = false)
+    private String nombre;
+
     @Column(length = 15, unique = true, nullable = false)
     private String matricula;
 
@@ -35,4 +38,7 @@ public class Vehiculo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sucursal_id", nullable = false)
     private Sucursal sucursal;
+
+    @Column(name = "imagen_url")
+    private String imagenUrl;
 }
