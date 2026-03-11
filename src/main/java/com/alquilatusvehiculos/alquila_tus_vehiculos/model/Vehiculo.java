@@ -55,8 +55,4 @@ public class Vehiculo {
 
     @Column(name = "imagen_url")
     private String imagenUrl;
-
-    public void setId(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

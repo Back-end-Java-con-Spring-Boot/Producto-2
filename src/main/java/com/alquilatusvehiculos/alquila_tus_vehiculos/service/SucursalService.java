@@ -1,10 +1,13 @@
 package com.alquilatusvehiculos.alquila_tus_vehiculos.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Sucursal;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.repository.SucursalRepository;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

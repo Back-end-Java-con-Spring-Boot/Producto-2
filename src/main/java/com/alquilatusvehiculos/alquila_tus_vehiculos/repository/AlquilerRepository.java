@@ -1,11 +1,12 @@
 package com.alquilatusvehiculos.alquila_tus_vehiculos.repository;
 
-import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Alquiler;
-import com.alquilatusvehiculos.alquila_tus_vehiculos.model.EstadoAlquiler;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Alquiler;
+import com.alquilatusvehiculos.alquila_tus_vehiculos.model.EstadoAlquiler;
 
 public interface AlquilerRepository extends JpaRepository<Alquiler, Long> {
     List<Alquiler> findByEstado(EstadoAlquiler estado);

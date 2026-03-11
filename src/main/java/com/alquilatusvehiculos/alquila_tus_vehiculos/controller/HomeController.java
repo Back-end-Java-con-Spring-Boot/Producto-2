@@ -1,11 +1,13 @@
 package com.alquilatusvehiculos.alquila_tus_vehiculos.controller;
 
-import com.alquilatusvehiculos.alquila_tus_vehiculos.repository.SucursalRepository;
-import com.alquilatusvehiculos.alquila_tus_vehiculos.repository.VehiculoRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.alquilatusvehiculos.alquila_tus_vehiculos.repository.SucursalRepository;
+import com.alquilatusvehiculos.alquila_tus_vehiculos.repository.VehiculoRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
