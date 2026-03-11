@@ -1,5 +1,6 @@
 package com.alquilatusvehiculos.alquila_tus_vehiculos.model;
 
+
 public enum EstadoAlquiler {
-    ACTIVO, FINALIZADO, CANCELADO
+    ACTIVO, CANCELADO, COMPLETADO
 }

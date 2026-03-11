@@ -23,20 +23,20 @@ VALUES (1, '1234ABC', 5, 45.50, 'TERRESTRE', 1),
 */
 
 -- 3. CLIENTES
--- INSERT IGNORE INTO clientes (id, nombre, apellidos, email)
--- VALUES (1, 'Esteban', 'Dido Buscado', 'esteban.dido@email.com'),
---        (2, 'Elena', 'Nito Del Bosque', 'elena.nito@email.com'),
---        (3, 'Estela', 'Gartija Veloz', 'estela.gartija@email.com'),
---        (4, 'Armando', 'Bronca Segura', 'armando.lios@email.com'),
---        (5, 'Inés', 'Plícable Ruta', 'ines.plicable@email.com'),
---        (6, 'Pere', 'Gil Fresco', 'pere.gil@email.com');
+ INSERT IGNORE INTO clientes (id, nombre, apellidos, email)
+ VALUES (1, 'Esteban', 'Dido Buscado', 'esteban.dido@email.com'),
+        (2, 'Elena', 'Nito Del Bosque', 'elena.nito@email.com'),
+        (3, 'Estela', 'Gartija Veloz', 'estela.gartija@email.com'),
+        (4, 'Armando', 'Bronca Segura', 'armando.lios@email.com'),
+        (5, 'Inés', 'Plícable Ruta', 'ines.plicable@email.com'),
+        (6, 'Pere', 'Gil Fresco', 'pere.gil@email.com');
 
- 4. ALQUILERES
- INSERT IGNORE INTO alquileres (id, cliente_id, sucursal_id, precio_total, fecha_inicio, fecha_fin, estado)
- VALUES (1, 1, 1, 136.50, '2024-03-15 10:00:00', '2024-03-18 10:00:00', 'COMPLETADO'),
-        (2, 2, 2, 55.00, '2024-04-01 09:00:00', '2024-04-02 09:00:00', 'ACTIVO'),
-        (3, 3, 4, 950.00, '2024-05-10 08:00:00', '2024-05-11 20:00:00', 'RESERVADO');
+-- Asegúrate de que los nombres de las columnas coincidan con lo que vimos en el DESCRIBE
+INSERT IGNORE INTO alquileres (id, id_cliente, id_sucursal, precio_total, fecha_inicio, fecha_fin, estado)
+VALUES (1, 1, 1, 136.50, '2024-03-15 10:00:00', '2024-03-18 10:00:00', 'COMPLETADO'),
+       (2, 2, 2, 55.00, '2024-04-01 09:00:00', '2024-04-02 09:00:00', 'ACTIVO'),
+       (3, 3, 4, 950.00, '2024-05-10 08:00:00', '2024-05-11 20:00:00', 'CANCELADO');
 
 -- 5. TABLA INTERMEDIA
--- INSERT IGNORE INTO alquiler_vehiculos (alquiler_id, vehiculo_id)
--- VALUES (1, 1), (1, 2), (2, 3), (3, 6);
+INSERT IGNORE INTO alquiler_vehiculos (alquiler_id, vehiculo_id)
+VALUES (1, 1), (1, 2), (2, 3), (3, 6);
