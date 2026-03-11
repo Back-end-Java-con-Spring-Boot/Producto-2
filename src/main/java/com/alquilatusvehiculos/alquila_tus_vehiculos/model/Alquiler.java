@@ -3,6 +3,7 @@ package com.alquilatusvehiculos.alquila_tus_vehiculos.model;
 import jakarta.persistence.*;
 import jakarta.websocket.ClientEndpoint;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,17 +11,17 @@ import java.time.LocalDateTime;
 public class Alquiler {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
-    private Cliente cliente_id;
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
-    private  Sucursal sucursal_id;
+    @JoinColumn(name = "sucursal_id", nullable = false)
+    private  Sucursal sucursal;
 
-    private float precio_total;
+    private BigDecimal precio_total;
     private LocalDateTime fecha_inicio;
     private  LocalDateTime fecha_fin;
 
