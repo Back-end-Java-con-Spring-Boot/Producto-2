@@ -2,7 +2,7 @@ services:
   db:
     image: mysql:8.0
     container_name: mysql_db
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: alquila_db
       MYSQL_ROOT_PASSWORD: root_password
@@ -10,28 +10,7 @@ services:
       MYSQL_PASSWORD: user_password
     ports:
       - "3307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-
-  app:
-    build: .
-    container_name: spring_app
-    ports:
-      - "8080:8080"
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/alquila_db?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=user_app
-      - SPRING_DATASOURCE_PASSWORD=user_password
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-
-volumes:
-  mysql_data:
-    driver: local

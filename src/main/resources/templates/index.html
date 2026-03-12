@@ -1,17 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout :: head}"></head>
-<body class="container text-center">
+<head th:replace="~{layout :: head}">
+  <title>Inicio - Sleipnir Alquiler</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
 <nav th:replace="~{layout :: header}"></nav>
 
-<div class="py-5 mt-5 bg-light rounded shadow">
-  <h1>Bienvenido a Alquila Tus Vehículos</h1>
-  <p class="lead">Gestiona tu flota y sucursales desde un solo lugar.</p>
-  <hr class="my-4">
-  <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-    <a th:href="@{/sucursales/lista}" class="btn btn-primary btn-lg px-4">Ver Sucursales</a>
-    <a th:href="@{/vehiculos/lista}" class="btn btn-outline-secondary btn-lg px-4">Ver Vehículos</a>
-  </div>
-</div>
+<main class="flex-grow-1">
+  <header class="hero-section">
+    <div class="container">
+      <div class="row align-items-center w-100">
+
+        <div class="col-lg-5 col-md-12">
+          <div class="search-box">
+            <h3 class="text-white fw-bold mb-4">Buscador de Vehículos</h3>
+            <form class="row g-3">
+              <div class="col-6">
+                <label class="form-label text-white small fw-bold">Recogida</label>
+                <input type="text" class="form-control" placeholder="Lugar...">
+              </div>
+              <div class="col-6">
+                <label class="form-label text-white small fw-bold">Devolución</label>
+                <input type="text" class="form-control" placeholder="Lugar...">
+              </div>
+
+              <div class="col-6">
+                <label class="form-label text-white small fw-bold">Fecha de Inicio</label>
+                <input type="date" class="form-control">
+              </div>
+              <div class="col-6">
+                <label class="form-label text-white small fw-bold">Fecha de Fin</label>
+                <input type="date" class="form-control">
+              </div>
+
+              <div class="col-6">
+                <label class="form-label text-white small fw-bold">Hora de Inicio</label>
+                <input type="time" class="form-control">
+              </div>
+              <div class="col-6">
+                <label class="form-label text-white small fw-bold">Hora de Fin</label>
+                <input type="time" class="form-control">
+              </div>
+
+              <div class="col-12 mt-4">
+                <button type="button" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm">
+                  Buscar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-lg-7 d-none d-lg-block text-end">
+          <div class="hero-text-overlay">
+            <h1 class="display-2 fw-bold mb-3">¡Reserva ahora!</h1>
+            <p class="fs-4 mb-4">
+              Las mejores condiciones del mercado,<br>
+              seguro incluido y sin fianza.
+            </p>
+            <button class="btn btn-primary btn-lg px-5 py-3 fw-bold shadow-lg rounded-pill">
+              Reservar
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+
 </body>
 </html>
