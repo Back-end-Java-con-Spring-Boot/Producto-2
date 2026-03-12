@@ -7,7 +7,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,25 @@ public class AlquilerService {
     }
 
     @Transactional
+    public BigDecimal calcularPrecio(Alquiler alquiler){
+        Long dias = ChronoUnit.DAYS.between(alquiler.getFechaInicio(), alquiler.getFechaFin());
+
+        if (dias < 0){
+            dias = 1l;
+        }
+
+        BigDecimal precioBaseVehiculos = alquiler.getVehiculos().stream()
+                .map(v -> v.getPrecioHora().multiply(new BigDecimal(24))) // Pasamos precio/hora a precio/día
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return precioBaseVehiculos.multiply(new BigDecimal(dias));
+
+    }
+
+
+    @Transactional
     public Alquiler crearAlquiler(Alquiler alquiler) {
+        alquiler.setPrecioTotal(calcularPrecio(alquiler));
         return alquilerRepository.save(alquiler);
     }
 
@@ -35,10 +55,20 @@ public class AlquilerService {
             alquilerExistente.setFechaFin(alquilerActualizado.getFechaFin());
             alquilerExistente.setFechaInicio(alquilerActualizado.getFechaInicio());
             alquilerExistente.setVehiculos(alquilerActualizado.getVehiculos());
+
+            alquilerExistente.setPrecioTotal(calcularPrecio(alquilerExistente));
+
             return alquilerRepository.save(alquilerExistente);
         } else {
             throw new RuntimeException("No se puede actualizar una reserva finalizada o cancelada");
         }
+    }
+
+    @Transactional
+    public Alquiler buscarPorId(Long id){
+        return alquilerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No se encontró el alquiler con ID: " + id));
+
     }
 
     @Transactional
@@ -53,6 +83,7 @@ public class AlquilerService {
         alquiler.setEstado(EstadoAlquiler.CANCELADO);
         return alquilerRepository.save(alquiler);
     }
+
 
     // Filtros extras
     public List<Alquiler> filtrarPorEstado(EstadoAlquiler estadoSelecionado) {
@@ -71,4 +102,5 @@ public class AlquilerService {
         List<Alquiler> alquileres = alquilerRepository.findByClienteEmail(email_cliente);
         return alquileres.isEmpty() ? new ArrayList<>() : alquileres;
     }
+
 }
