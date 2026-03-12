@@ -30,6 +30,7 @@ import lombok.ToString;
 @ToString
 
 public class Alquiler {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -50,13 +51,11 @@ public class Alquiler {
     )
     private List<Vehiculo> vehiculos;
 
-    private BigDecimal precio_total;
-    private LocalDateTime fecha_inicio;
-    private LocalDateTime fecha_fin;
+    private BigDecimal precioTotal;    // was precio_total
+    private LocalDateTime fechaInicio; // was fecha_inicio
+    private LocalDateTime fechaFin;    // was fecha_fin
 
     @Enumerated(EnumType.STRING)
     private EstadoAlquiler estado = EstadoAlquiler.ACTIVO;
 
-
 }
-
