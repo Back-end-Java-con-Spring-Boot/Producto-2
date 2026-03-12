@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Sleipnir - Editar Alquiler</title>
+</head>
+<body>
+<nav th:replace="~{layout :: header}"></nav>
+
+<main class="container mt-5 pt-5">
+    <h2>Editar Alquiler</h2>
+
+    <form th:action="@{/alquiler/guardar}" th:object="${alquiler}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <div class="mb-3">
+            <label class="form-label">Cliente</label>
+            <input type="text" class="form-control"
+                   th:value="${alquiler.cliente != null ? alquiler.cliente.nombre : 'No asignado'}"
+                   readonly disabled>
+            <input type="hidden" th:field="*{cliente.id}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Sucursal</label>
+            <select class="form-select" th:field="*{sucursal.id}" required>
+                <option th:each="s : ${listaSucursales}"
+                        th:value="${s.id}"
+                        th:text="${s.nombre}"></option>
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Fecha Inicio</label>
+                <input type="datetime-local" class="form-control" th:field="*{fechaInicio}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Fecha Fin</label>
+                <input type="datetime-local" class="form-control" th:field="*{fechaFin}" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Vehículos (Puedes modificar la selección)</label>
+            <div class="border p-3 rounded">
+                <div th:each="v : ${listaVehiculos}" class="form-check">
+                    <input class="form-check-input" type="checkbox"
+                           th:value="${v.id}"
+                           th:field="*{vehiculos}"
+                           th:id="${'v'+v.id}">
+                    <label class="form-check-label" th:for="${'v'+v.id}" th:text="${v.marca + ' ' + v.modelo}"></label>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+        <a th:href="@{/alquiler}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</main>
+</body>
+</html>

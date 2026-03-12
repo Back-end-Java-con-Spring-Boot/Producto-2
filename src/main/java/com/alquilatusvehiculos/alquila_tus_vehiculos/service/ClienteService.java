@@ -13,13 +13,17 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    // Inyección por constructor (mejor práctica que @Autowired en campo)
     public ClienteService(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
     }
 
     // ── READ ───────────────────────────────────────────────────────
     public List<Cliente> findAll() {
+        return clienteRepository.findAll();
+    }
+
+    // Alias para compatibilidad con AlquilerController del equipo
+    public List<Cliente> listarTodos() {
         return clienteRepository.findAll();
     }
 
@@ -40,7 +44,6 @@ public class ClienteService {
     // ── VALIDACIÓN email duplicado ─────────────────────────────────
     public boolean emailYaExiste(String email, Long idActual) {
         Optional<Cliente> existente = clienteRepository.findByEmail(email);
-        // Permite guardar si el email es del mismo cliente (edición)
         return existente.isPresent() && !existente.get().getId().equals(idActual);
     }
 }

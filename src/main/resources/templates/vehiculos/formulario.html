@@ -30,7 +30,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-bold">Plazas</label>
-                    <input type="text" class="form-control rounded-3" th:field="*{plazas}" required>
+                    <input type="number" class="form-control rounded-3" th:field="*{plazas}" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-bold">Tipo de Vehículo</label>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-bold">Precio/Hora</label>
-                    <input type="number" class="form-control rounded-3" th:field="*{precioHora}" required>
+                    <input type="number" min="0" class="form-control rounded-3" th:field="*{precioHora}" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-bold">Sucursal</label>

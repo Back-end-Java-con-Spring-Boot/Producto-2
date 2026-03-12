@@ -45,6 +45,22 @@
   </div>
 </nav>
 
+<div th:fragment="alertas" class="container mt-3">
+
+  <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+    <i class="bi bi-check-circle-fill me-2"></i>
+    <span th:text="${mensajeExito}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+  </div>
+
+  <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    <strong class="me-1">¡Aviso!</strong> <span th:text="${mensajeError}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+  </div>
+
+</div>
+
 <footer th:fragment="footer" class="main-footer mt-auto" style="background-color: #1a1f3d; color: white;">
   <div class="container py-3"> <div class="row align-items-center"> <div class="col-lg-4 mb-2 mb-lg-0">
     <a class="footer-logo text-decoration-none text-white fw-bold fs-5" th:href="@{/}">Sleipnir</a>

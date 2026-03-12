@@ -12,12 +12,27 @@ on:
       - develop
 # Ejecuta el código en una máquina linux usando java 21 y temurin.
 # Se descargan dependencias, se compila el proyecto y genera el .jar
-# con -DskipTests evitamos los tests hasta tener configurado JPA y MySQL
 # Si falla el workflow no se puede mezclar el código.
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    services:
+      mysql_db:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: alquila_db
+          MYSQL_ROOT_PASSWORD: root_password
+          MYSQL_USER: user_app
+          MYSQL_PASSWORD: user_password
+        # Mapeamos el puerto 3307 igual que en tu docker-compose local
+        ports:
+          - 3307:3306
+        # Esperamos a que la base de datos esté lista antes de seguir
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,5 +43,5 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Build with Maven
-        run: mvn clean package -DskipTests
+      - name: Build and Test with Maven
+        run: mvn clean package
