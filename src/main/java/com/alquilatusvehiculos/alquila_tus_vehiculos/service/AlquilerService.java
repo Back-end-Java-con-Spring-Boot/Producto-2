@@ -42,6 +42,9 @@ public class AlquilerService {
         if (alquiler.getFechaInicio().isAfter(alquiler.getFechaFin())) {
             throw new RuntimeException("La fecha de inicio no puede ser mayor que la fecha de fin");
         }
+        if (alquiler.getVehiculos() == null || alquiler.getVehiculos().isEmpty()) {
+            throw new RuntimeException("Debes seleccionar al menos un vehículo");
+        }
 
         alquiler.setPrecioTotal(calcularPrecio(alquiler));
         return alquilerRepository.save(alquiler);
@@ -59,6 +62,9 @@ public class AlquilerService {
 
         if (alquilerActualizado.getFechaInicio().isAfter(alquilerActualizado.getFechaFin())) {
             throw new RuntimeException("La fecha de inicio no puede ser mayor que la fecha de fin");
+        }
+        if (alquilerActualizado.getVehiculos() == null || alquilerActualizado.getVehiculos().isEmpty()) {
+            throw new RuntimeException("Debes seleccionar al menos un vehículo");
         }
 
         alquilerExistente.setFechaInicio(alquilerActualizado.getFechaInicio());
