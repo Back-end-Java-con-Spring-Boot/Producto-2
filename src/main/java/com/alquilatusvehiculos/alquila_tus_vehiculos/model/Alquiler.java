@@ -1,7 +1,9 @@
 package com.alquilatusvehiculos.alquila_tus_vehiculos.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -20,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Transient;
 
 @Entity
 @Table(name = "alquileres")
@@ -32,7 +35,7 @@ import lombok.ToString;
 public class Alquiler {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
@@ -57,5 +60,15 @@ public class Alquiler {
 
     @Enumerated(EnumType.STRING)
     private EstadoAlquiler estado = EstadoAlquiler.ACTIVO;
+
+    // Campos auxiliares para formulario (no se guardan en DB)
+    @Transient
+    private LocalDate fechaInicioDate;
+    @Transient
+    private LocalTime fechaInicioTime;
+    @Transient
+    private LocalDate fechaFinDate;
+    @Transient
+    private LocalTime fechaFinTime;
 
 }

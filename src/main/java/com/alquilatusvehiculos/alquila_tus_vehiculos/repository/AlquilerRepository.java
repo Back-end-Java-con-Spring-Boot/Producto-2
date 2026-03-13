@@ -14,6 +14,6 @@ public interface AlquilerRepository extends JpaRepository<Alquiler, Long> {
 
     List<Alquiler> findByFechaInicioBetween(LocalDateTime start, LocalDateTime end);
 
-    List<Alquiler> findByClienteEmail(String email);  
+    List<Alquiler> findByClienteNombre(String nombre);
 
 }
