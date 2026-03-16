@@ -1,5 +1,6 @@
 package com.alquilatusvehiculos.alquila_tus_vehiculos.controller;
 
+import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Alquiler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,9 @@ public class HomeController {
     private final SucursalRepository sucursalRepository;
 
     @GetMapping("/")
-    public String index() {
-        // Busca en templates/index.html
+    public String index(Model model) {
+        model.addAttribute("listaSucursales", sucursalRepository.findAll());
+        model.addAttribute("alquiler", new Alquiler());
         return "index";
     }
 

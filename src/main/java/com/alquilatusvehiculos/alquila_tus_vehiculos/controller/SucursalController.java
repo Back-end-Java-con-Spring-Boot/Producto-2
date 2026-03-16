@@ -12,6 +12,7 @@ import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Sucursal;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.service.SucursalService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/sucursales")
@@ -34,8 +35,16 @@ public class SucursalController {
     }
 
     @GetMapping("/borrar/{id}")
-    public String borrar(@PathVariable Long id) {
-        sucursalService.borrar(id);
+    public String borrar(@PathVariable Long id, RedirectAttributes redirectAttrs) {
+        try {
+            sucursalService.borrar(id);
+            redirectAttrs.addFlashAttribute("mensajeExito", "Sucursal eliminada correctamente.");
+        } catch (IllegalStateException | IllegalArgumentException e) {
+                redirectAttrs.addFlashAttribute("mensajeError", e.getMessage());
+            } catch (Exception e) {
+                redirectAttrs.addFlashAttribute("mensajeError", "No se puede eliminar: La sucursal está asociada a un historial de alquileres.");
+            }
+
         return "redirect:/sucursales";
     }
 }

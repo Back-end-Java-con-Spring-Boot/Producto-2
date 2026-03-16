@@ -2,6 +2,7 @@ package com.alquilatusvehiculos.alquila_tus_vehiculos.service;
 
 import java.util.List;
 
+import com.alquilatusvehiculos.alquila_tus_vehiculos.repository.AlquilerRepository;
 import org.springframework.stereotype.Service;
 
 import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Sucursal;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class SucursalService {
 
     private final SucursalRepository sucursalRepository;
+    private final AlquilerRepository alquilerRepository;
 
     // Obtener todas las sucursales para la tabla
     public List<Sucursal> obtenerTodas() {
@@ -27,6 +29,13 @@ public class SucursalService {
 
     // Borrar por ID
     public void borrar(Long id) {
+
+        boolean estaEnUso = alquilerRepository.existsBySucursalId(id);
+
+        if(estaEnUso){
+            throw new IllegalStateException("No se puede eliminar: La sucursal tiene un alquiler asociado.");
+        }
+
         sucursalRepository.deleteById(id);
     }
 

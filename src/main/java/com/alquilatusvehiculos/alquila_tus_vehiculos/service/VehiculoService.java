@@ -1,5 +1,6 @@
 package com.alquilatusvehiculos.alquila_tus_vehiculos.service;
 
+import com.alquilatusvehiculos.alquila_tus_vehiculos.model.EstadoAlquiler;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Vehiculo;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.repository.AlquilerRepository;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.repository.VehiculoRepository;
@@ -38,11 +39,11 @@ public class VehiculoService {
         if(!vehiculoRepository.existsById(id)){
             throw new IllegalArgumentException("No se puede eliminar: Vehículo con ID " + id + " no existe");
         }
-        //boolean estaEnUso = alquilerRepository.comprobarSiVehiculoEstaEnUso(id, EstadoAlquiler.ACTIVO);
+        boolean estaEnUso = alquilerRepository.existsByVehiculosIdAndEstado(id, EstadoAlquiler.ACTIVO);
 
-       // if(estaEnUso){
-       //     throw new IllegalStateException("No se puede eliminar: El vehículo está actualmente en un alquiler ACTIVO.");
-        //}
+        if(estaEnUso){
+            throw new IllegalStateException("No se puede eliminar: El vehículo está actualmente en un alquiler ACTIVO.");
+        }
 
         vehiculoRepository.deleteById(id);
     }

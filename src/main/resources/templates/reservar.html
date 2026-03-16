@@ -64,8 +64,7 @@
                                 <span class="fs-4 fw-bold text-success" th:text="${vehiculo.precioDia}"></span>
                                 <span class="text-muted">€ / dia</span>
                             </div>
-                            <!--/* MODIFICAR HREF PARA LLEVAR AL FORMULARIO DE ALQUILER CON EL ID DEL VEHÍCULO */-->
-                            <a href="#" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Alquilar Vehículo</a>
+                            <a th:href="@{/alquiler/crear(vehiculoId=${vehiculo.id})}" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Alquilar Vehículo</a>
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@ package com.alquilatusvehiculos.alquila_tus_vehiculos.controller;
 
 import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Alquiler;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.model.EstadoAlquiler;
+import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Vehiculo;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.service.AlquilerService;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.service.ClienteService;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.service.VehiculoService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/alquiler")
@@ -42,8 +44,26 @@ public class AlquilerController {
     }
 
     @GetMapping("/crear")
-    public String formularioAlquiler(Model model){
-        model.addAttribute("alquiler", new Alquiler());
+    public String formularioAlquiler(@ModelAttribute Alquiler alquiler, @RequestParam(required = false) Long vehiculoId, Model model){
+
+        if (alquiler.getVehiculos() == null) {
+            alquiler.setVehiculos(new ArrayList<>());
+        }
+
+        //Codigo añadido para mostrar el vehículo en el formulario al hacer click en reservas Alquilar Vehiculo y en el formulario del inicio
+        if(vehiculoId != null){
+            try{
+                Vehiculo vehiculoSeleccionado = vehiculoService.findById(vehiculoId);
+                alquiler.getVehiculos().add(vehiculoSeleccionado);
+                if (alquiler.getSucursal() == null || alquiler.getSucursal().getId() == null) {
+                    alquiler.setSucursal(vehiculoSeleccionado.getSucursal());
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("Vehículo no encontrado: " + e.getMessage());
+            }
+        }
+
+        model.addAttribute("alquiler", alquiler);
 
         model.addAttribute("listaClientes", clienteService.findAll());
         model.addAttribute("listaVehiculos", vehiculoService.findAll());

@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Transient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "alquileres")
@@ -35,7 +36,7 @@ import org.springframework.data.annotation.Transient;
 public class Alquiler {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -63,12 +64,16 @@ public class Alquiler {
 
     // Campos auxiliares para formulario (no se guardan en DB)
     @Transient
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaInicioDate;
     @Transient
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime fechaInicioTime;
     @Transient
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaFinDate;
     @Transient
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime fechaFinTime;
 
 }

@@ -53,7 +53,7 @@
                     <td th:text="${#temporals.format(alquiler.fechaInicio, 'dd/MM/yyyy HH:mm')}"></td>
                     <td th:text="${#temporals.format(alquiler.fechaFin, 'dd/MM/yyyy HH:mm')}"></td>
                     <td>
-                        <span th:classappend="${alquiler.estado.name() == 'ACTIVO' ? 'badge bg-success' : 'badge bg-secondary'}"
+                        <span th:classappend="${alquiler.estado.name() == 'ACTIVO' ? 'badge bg-success' : (alquiler.estado.name() == 'CANCELADO' ? 'badge bg-danger' : 'badge bg-secondary')}"
                               th:text="${alquiler.estado}">
                         </span>
                     </td>
