@@ -15,37 +15,40 @@
         <div class="col-lg-5 col-md-12">
           <div class="search-box">
             <h3 class="text-white fw-bold mb-4">Buscador de Vehículos</h3>
-            <form class="row g-3">
-              <div class="col-6">
-                <label class="form-label text-white small fw-bold">Recogida</label>
-                <input type="text" class="form-control" placeholder="Lugar...">
-              </div>
-              <div class="col-6">
-                <label class="form-label text-white small fw-bold">Devolución</label>
-                <input type="text" class="form-control" placeholder="Lugar...">
+            <form class="row g-3" th:action="@{/alquiler/crear}" method="GET" th:object="${alquiler}">
+
+              <div class="col-12 mb-3">
+                <label class="form-label text-white small fw-bold">Sucursal</label>
+                <select class="form-select" th:field="*{sucursal.id}" required>
+                  <option value="">Selecciona una sucursal</option>
+                  <option th:each="s : ${listaSucursales}"
+                          th:value="${s.id}"
+                          th:text="${s.nombre}">
+                  </option>
+                </select>
               </div>
 
               <div class="col-6">
                 <label class="form-label text-white small fw-bold">Fecha de Inicio</label>
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" th:field="*{fechaInicioDate}" required>
               </div>
               <div class="col-6">
                 <label class="form-label text-white small fw-bold">Fecha de Fin</label>
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" th:field="*{fechaFinDate}" required>
               </div>
 
               <div class="col-6">
                 <label class="form-label text-white small fw-bold">Hora de Inicio</label>
-                <input type="time" class="form-control">
+                <input type="time" class="form-control" th:field="*{fechaInicioTime}" required>
               </div>
               <div class="col-6">
                 <label class="form-label text-white small fw-bold">Hora de Fin</label>
-                <input type="time" class="form-control">
+                <input type="time" class="form-control" th:field="*{fechaFinTime}" required>
               </div>
 
               <div class="col-12 mt-4">
-                <button type="button" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm">
-                  Buscar
+                <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm">
+                  Buscar Vehículos
                 </button>
               </div>
             </form>
@@ -59,9 +62,9 @@
               Las mejores condiciones del mercado,<br>
               seguro incluido y sin fianza.
             </p>
-            <button class="btn btn-primary btn-lg px-5 py-3 fw-bold shadow-lg rounded-pill">
+            <a th:href="@{/reservar}" class="btn btn-primary btn-lg px-5 py-3 fw-bold shadow-lg rounded-pill">
               Reservar
-            </button>
+            </a>
           </div>
         </div>
 
