@@ -1,13 +1,13 @@
 package com.alquilatusvehiculos.alquila_tus_vehiculos.service;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Alquiler;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.model.EstadoAlquiler;
+import com.alquilatusvehiculos.alquila_tus_vehiculos.model.Vehiculo;
 import com.alquilatusvehiculos.alquila_tus_vehiculos.repository.AlquilerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -23,38 +23,33 @@ public class AlquilerService {
         return alquilerRepository.findAll();
     }
 
-    @Transactional
-    public BigDecimal calcularPrecio(Alquiler alquiler){
+    @Transactional()
+    public BigDecimal calcularPrecio(Alquiler alquiler) {
+        LocalDateTime inicio = alquiler.getFechaInicio();
+        LocalDateTime fin = alquiler.getFechaFin();
 
-        long horas = ChronoUnit.HOURS.between(
-                alquiler.getFechaInicio(),
-                alquiler.getFechaFin()
-        );
+        long dias = ChronoUnit.DAYS.between(inicio.toLocalDate(), fin.toLocalDate());
 
-        long dias = (long) Math.ceil(horas / 24.0);
+        if (fin.toLocalTime().isAfter(inicio.toLocalTime())) {
+            dias++;
+        }
 
         dias = Math.max(1, dias);
 
-        BigDecimal precioDia = alquiler.getVehiculos().stream()
-                .map(v -> v.getPrecioDia())
+
+        BigDecimal precioTotalPorDia = alquiler.getVehiculos().stream()
+                .map(Vehiculo::getPrecioDia)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return precioDia.multiply(BigDecimal.valueOf(dias));
+        return precioTotalPorDia.multiply(BigDecimal.valueOf(dias));
     }
 
 
     @Transactional
     public Alquiler crearAlquiler(Alquiler alquiler) {
-        LocalDate hoy = LocalDate.now();
-
-        if (alquiler.getFechaInicio().toLocalDate().isBefore(hoy)) {
-            throw new RuntimeException("La fecha de inicio no puede ser pasada");
-        }
-
         if (alquiler.getFechaInicio().isAfter(alquiler.getFechaFin())) {
             throw new RuntimeException("La fecha de inicio no puede ser mayor que la fecha de fin");
         }
-
         if (alquiler.getVehiculos() == null || alquiler.getVehiculos().isEmpty()) {
             throw new RuntimeException("Debes seleccionar al menos un vehículo");
         }
@@ -62,19 +57,15 @@ public class AlquilerService {
         alquiler.setPrecioTotal(calcularPrecio(alquiler));
         return alquilerRepository.save(alquiler);
     }
+
     @Transactional
     public Alquiler actualizarAlquiler(Long id, Alquiler alquilerActualizado) {
-
-        LocalDate hoy = LocalDate.now();
 
         Alquiler alquilerExistente = alquilerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No se encontró el alquiler con ID: " + id));
 
         if (alquilerExistente.getEstado() != EstadoAlquiler.ACTIVO) {
             throw new RuntimeException("No se puede actualizar una reserva finalizada o cancelada");
-        }
-        if (alquilerActualizado.getFechaInicio().toLocalDate().isBefore(hoy)) {
-            throw new RuntimeException("La fecha de inicio no puede ser pasada");
         }
 
         if (alquilerActualizado.getFechaInicio().isAfter(alquilerActualizado.getFechaFin())) {
