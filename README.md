@@ -1,25 +1,23 @@
-# Producto-1
-Proyecto back-end desarrollado con Spring Boot para la gestión de alquiler de vehículos. Este repositorio contiene la configuración inicial, controlador base, integración con Git y despliegue mediante Docker como parte del Producto 1 del curso.
+# Producto-2: Alquila Tus Vehiculos
+Proyecto back-end desarrollado con Spring Boot para la gestión de alquiler de vehículos. En este Producto 2, la aplicación ha evolucionado para incluir vistas dinámicas con Thymeleaf, persistencia de datos y una base de datos MySQL, todo orquestado mediante Docker Compose.
 
-## Alquila Tus Vehículos
-Este proyecto es una aplicación Spring Boot empaquetada como JAR y preparada para ejecutarse usando Docker con Java 21 y Maven.
+## Requisitos Previos
+* **Docker** y **Docker Compose** instalados en tu sistema.
+* Puerto `8080` libre para la aplicación web.
+* Puerto `3307` libre para la conexión externa a la base de datos.
 
-### Construcción de la imagen
-Desde la raíz del proyecto (donde está el Dockerfile), ejecuta:
+## Despliegue del Proyecto
 
+El proyecto utiliza un entorno multicontenedor definido en el archivo `docker-compose.yml`.
+
+### Levantar el entorno completo (App + Base de datos)
+
+Desde la raíz del proyecto, ejecuta el siguiente comando para construir la imagen de Java (usando un Dockerfile multi-etapa con Maven y Java 21) y levantar ambos contenedores:
+
+```bash
+docker-compose up -d --build
 ```
-docker build -t alquila-vehiculos . 
-```
-
-Esto compila el proyecto con Maven, genera el JAR y crea una imagen ligera con Java 21 (JRE)
-
-
-### Ejecución del contenedor
-
-Una vez creada la imagen, ejecuta:
-```
-docker run -p 8080:8080 --name alquila-vehiculos-container alquila-vehiculos
-```
+Para levantar solamente la base de datos añadir **bd**, para levantar solamente la aplicaicón añadir **app**
 
 La aplicación quedará disponible en:
 
@@ -27,15 +25,12 @@ La aplicación quedará disponible en:
 http://localhost:8080
 ```
 
-### Reconstrucción de la imagen 
+### Actualización de la aplicación 
 
-Se se hacen cambios en el código ejecutar:
+Si se hacen modificaciones en el código fuente de Spring Boot o en las plantillas HTML, reconstruir el contenedor de la aplicación:
 
 ```
-docker stop alquila-vehiculos-container
-docker rm alquila-vehiculos-container
-docker build -t alquila-vehiculos .
-docker run -p 8080:8080 --name alquila-vehiculos-container alquila-vehiculos
+docker-compose up -d --build app
 ```
 
 ---
