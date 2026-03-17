@@ -1,0 +1,106 @@
+/* --- Estilos Generales --- */
+:root {
+    --azul-oscuro: #1a1f3d;
+    --azul-primario: #007bff;
+}
+
+body {
+    background-color: var(--azul-oscuro);
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Ajustes para el modo Administración (Tablas) --- */
+.admin-header {
+    margin-top: 100px;
+    margin-bottom: 30px;
+}
+
+.admin-title {
+    color: white;
+    font-weight: 700;
+}
+
+/* Buscador estilo Pill corregido */
+.search-pill {
+    background: white;
+    border-radius: 50px;
+    border: 1px solid var(--azul-primario);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+/* ELIMINA LA FRANJA AZUL AL CLICAR */
+.search-pill .form-control:focus,
+.search-pill .form-control {
+    border: none !important;
+    box-shadow: none !important; /* Quita el resplandor azul */
+    outline: none !important;
+    background-color: transparent !important;
+}
+
+.search-pill .input-group-text {
+    background-color: white !important;
+    border: none !important;
+    padding-left: 1.5rem;
+}
+
+/* Tarjeta de la Tabla */
+.table-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.table-card thead {
+    background-color: #f8f9fa;
+}
+
+.table-card thead th {
+    color: #444;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 15px;
+}
+
+.table-card tbody td {
+    padding: 15px;
+    color: #333;
+}
+
+.col-id {
+    color: var(--azul-primario);
+    font-weight: bold;
+}
+
+/* --- Footer & Hero --- */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+}
+
+/* Caja de Búsqueda del Index (Gris 45%) */
+.search-box {
+    background: rgba(128, 128, 128, 0.45) !important;
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--azul-primario);
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.main-footer {
+    background-color: var(--azul-oscuro);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}

@@ -1,3 +1,21 @@
 spring:
   application:
     name: AlquilaTusVehiculos
+  thymeleaf:
+    cache: false
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/resources/templates
+  datasource:
+    url: jdbc:mysql://localhost:3307/alquila_db?allowPublicKeyRetrieval=true&useSSL=false
+    username: user_app
+    password: user_password
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  sql:
+    init:
+      mode: always

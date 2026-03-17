@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Sleipnir - Gestión de Sucursales</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<nav th:replace="~{layout :: header}"></nav>
+
+<main class="container flex-grow-1 admin-header" style="margin-top: 100px; margin-bottom: 50px;">
+    <div th:replace="~{layout :: alertas}"></div>
+    <div class="row align-items-center mb-4">
+        <div class="col-md-4"><h2 class="fw-bold text-white m-0">Sucursales</h2></div>
+        <div class="col-md-8 d-flex justify-content-end gap-3">
+            <div class="input-group shadow-sm w-50 search-pill">
+                <span class="input-group-text"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar Sucursales...">
+            </div>
+            <button type="button" class="btn btn-primary shadow-sm px-4 rounded-pill fw-bold" data-bs-toggle="modal" data-bs-target="#crearModal">
+                <i class="bi bi-plus-lg me-2"></i> Añadir Sucursal
+            </button>
+        </div>
+    </div>
+
+    <div class="card table-card border-0 shadow-lg">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                <tr>
+                    <th class="ps-4 py-3">ID</th>
+                    <th>NOMBRE</th>
+                    <th>DIRECCIÓN</th>
+                    <th>TELÉFONO</th>
+                    <th>CIUDAD</th>
+                    <th class="text-center pe-4">ACCIONES</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody">
+                <tr th:each="sucursal : ${listaSucursal}" th:id="'row-' + ${sucursal.id}">
+                    <td class="ps-4 col-id" th:text="${sucursal.id}"></td>
+
+                    <td>
+                        <span class="view-mode" th:text="${sucursal.nombre}"></span>
+                        <input type="text" th:id="'edit-nombre-' + ${sucursal.id}" th:value="${sucursal.nombre}" class="form-control form-control-sm edit-mode d-none">
+                    </td>
+
+                    <td>
+                        <span class="view-mode" th:text="${sucursal.direccion}"></span>
+                        <input type="text" th:id="'edit-direccion-' + ${sucursal.id}" th:value="${sucursal.direccion}" class="form-control form-control-sm edit-mode d-none">
+                    </td>
+
+                    <td>
+                        <span class="view-mode" th:text="${sucursal.telefono}"></span>
+                        <input type="text" th:id="'edit-telefono-' + ${sucursal.id}" th:value="${sucursal.telefono}" class="form-control form-control-sm edit-mode d-none">
+                    </td>
+
+                    <td>
+                        <span class="view-mode" th:text="${sucursal.ciudad}"></span>
+                        <input type="text" th:id="'edit-ciudad-' + ${sucursal.id}" th:value="${sucursal.ciudad}" class="form-control form-control-sm edit-mode d-none">
+                    </td>
+
+                    <td class="text-center pe-4">
+                        <div class="view-mode d-flex justify-content-center gap-2">
+                            <button type="button" class="btn btn-sm text-primary border-0" th:onclick="'activarEdicion(' + ${sucursal.id} + ')'">
+                                <i class="bi bi-pencil-square fs-5"></i>
+                            </button>
+                            <a th:href="@{/sucursales/borrar/{id}(id=${sucursal.id})}" class="btn btn-sm text-danger border-0" onclick="return confirm('¿Eliminar sucursal?')">
+                                <i class="bi bi-trash-fill fs-5"></i>
+                            </a>
+                        </div>
+
+                        <div class="edit-mode d-none d-flex justify-content-center gap-2">
+                            <button type="button" class="btn btn-sm btn-success rounded-circle" th:onclick="'enviarEdicion(' + ${sucursal.id} + ')'">
+                                <i class="bi bi-check-lg"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-secondary rounded-circle" th:onclick="'cancelarEdicion(' + ${sucursal.id} + ')'">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<form id="formInlineEdit" th:action="@{/sucursales/guardar}" method="post" style="display: none;">
+    <input type="hidden" name="id" id="form-edit-id">
+    <input type="hidden" name="nombre" id="form-edit-nombre">
+    <input type="hidden" name="direccion" id="form-edit-direccion">
+    <input type="hidden" name="telefono" id="form-edit-telefono">
+    <input type="hidden" name="ciudad" id="form-edit-ciudad">
+</form>
+
+<div class="modal fade" id="crearModal" tabindex="-1" aria-labelledby="crearModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 text-dark">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title fw-bold" id="crearModalLabel"><i class="bi bi-plus-circle me-2"></i> Nueva Sucursal</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/sucursales/guardar}" th:object="${nuevaSucursal}" method="post">
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nombre</label>
+                        <input type="text" th:field="*{nombre}" class="form-control rounded-3" placeholder="Ej: Central Madrid" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Dirección</label>
+                        <input type="text" th:field="*{direccion}" class="form-control rounded-3" placeholder="Calle Ejemplo 123" required>
+                    </div>
+                    <div class="mb-3 d-flex gap-3">
+                        <div class="w-50">
+                            <label class="form-label fw-bold">Teléfono</label>
+                            <input type="text" th:field="*{telefono}" class="form-control rounded-3" placeholder="600000000" required>
+                        </div>
+                        <div class="w-50">
+                            <label class="form-label fw-bold">Ciudad</label>
+                            <input type="text" th:field="*{ciudad}" class="form-control rounded-3" placeholder="Madrid" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Guardar Sucursal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/admin-sucursales.js}"></script>
+<script th:src="@{/js/buscador.js}"></script>
+
+</body>
+</html>

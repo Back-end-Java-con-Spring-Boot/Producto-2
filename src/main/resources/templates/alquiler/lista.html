@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Sleipnir - Gestión de Alquileres</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<nav th:replace="~{layout :: header}"></nav>
+
+<main class="container flex-grow-1 admin-header" style="margin-top: 100px; margin-bottom: 50px;">
+
+    <!-- Encabezado con botón y búsqueda -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-4">
+            <h2 class="fw-bold text-white m-0">Gestión de Alquileres</h2>
+        </div>
+        <div class="col-md-8 d-flex justify-content-end gap-3">
+            <!-- Barra de búsqueda global -->
+            <div class="input-group shadow-sm w-50 search-pill">
+                <span class="input-group-text"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar Alquileres...">
+            </div>
+            <a th:href="@{/alquiler/crear}" class="btn btn-primary shadow-sm px-4 rounded-pill fw-bold">
+                <i class="bi bi-plus-lg me-2"></i> Nuevo Alquiler
+            </a>
+        </div>
+    </div>
+
+    <!-- Tabla de alquileres -->
+    <div th:if="${errorMessage}" id='auto-close' class="alert alert-danger">
+        <span th:text="${errorMessage}"></span>
+    </div>
+    <div class="card table-card border-0 shadow-lg">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0" id="alquilerTable">
+                <thead>
+                <tr>
+                    <th class="ps-4 py-3">ID</th>
+                    <th>CLIENTE</th>
+                    <th>SUCURSAL</th>
+                    <th>FECHA INICIO</th>
+                    <th>FECHA FIN</th>
+                    <th>ESTADO</th>
+                    <th>TOTAL</th>
+                    <th class="text-center pe-4">ACCIONES</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody">
+                <tr th:each="alquiler : ${alquiler}">
+                    <td class="ps-4 col-id" th:text="${alquiler.id}"></td>
+                    <td th:text="${alquiler.cliente != null ? alquiler.cliente.nombre : 'Sin Cliente'}"></td>
+                    <td th:text="${alquiler.sucursal != null ? alquiler.sucursal.nombre : 'Sin Sucursal'}"></td>
+                    <td th:text="${#temporals.format(alquiler.fechaInicio, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${#temporals.format(alquiler.fechaFin, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td>
+                        <span th:classappend="${alquiler.estado.name() == 'ACTIVO' ? 'badge bg-success' : (alquiler.estado.name() == 'CANCELADO' ? 'badge bg-danger' : 'badge bg-secondary')}"
+                              th:text="${alquiler.estado}">
+                        </span>
+                    </td>
+                    <td class="fw-bold" th:text="${alquiler.precioTotal != null ? alquiler.precioTotal + ' €' : '0.00 €'}"></td>
+                    <td class="text-center pe-4">
+                        <div class="d-flex justify-content-center gap-2">
+                            <a th:href="@{/alquiler/editar/{id}(id=${alquiler.id})}" class="btn btn-sm text-primary border-0" title="Editar">
+                                <i class="bi bi-pencil-square fs-5"></i>
+                            </a>
+                            <a th:href="@{/alquiler/cancelar/{id}(id=${alquiler.id})}"
+                               class="btn btn-sm text-danger border-0"
+                               onclick="return confirm('¿Estás seguro de cancelar este alquiler?')"
+                               title="Cancelar">
+                                <i class="bi bi-x-circle-fill fs-5"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/buscador.js}"></script>
+<script th:src="@{/js/mensajeError.js}"></script>
+
+</body>
+</html>
